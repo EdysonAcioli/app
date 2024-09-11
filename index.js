@@ -1,11 +1,6 @@
 const { select, input, checkbox } = require('@inquirer/prompts')
 
-let meta = {
-    value: "tomar agua",
-    checked: false
-}
-
-let metas = [meta]
+let metas = []
 
 const cadastrarMeta = async () => {
     const meta = await input({message: "Digite a meta:"})
@@ -20,36 +15,40 @@ const cadastrarMeta = async () => {
 }
 
 const listarMetas = async () => {
-    const restostas = await checkbox({
-        message:"Use as setas, o espaço e o enter",
-        choices:[...metas],
-        instructions: false
-    })
-
-    if(restostas.length == 0){
-        console.log("Nenhuma meta selecionada")
-        return
-    }
-
-    metas.forEach((m) => {
-        m.checked = false
-    })
-
-    restostas.forEach((restosta) => {
-        const meta = metas.find((m) => {
-            return m.value == restosta
+    if(metas.length == 0){
+        console.log("Você não tem metas cadastradas!")
+    }else{
+        const respostasMarcadas = await checkbox({
+            message: "Use as setas para movimentar, o espaço para selecionar e o enter para avançar",
+            choices: [...metas],
+            instructions: false
         })
 
-        meta.checked = true
-    })
+        metas.forEach((m) => {
+            m.checked = false
+            console.log(m)
+        })
 
-    console.log('metas concluidas')
+        if(respostasMarcadas.length == 0){
+            console.log("Nenhuma meta selecionada")
+            return
+        }
+
+        respostasMarcadas.forEach((resposta) => {
+            const meta = metas.find((m) => {
+                return m.value == resposta
+            })
+
+            meta.checked = true
+        })
+
+        console.log('Metas concluidas')
+    }
 }
 
 const start = async () => {
 
     while(true){
-        
         const opcao = await select({
             message: "Menu >",
             choices: [
@@ -72,11 +71,10 @@ const start = async () => {
         switch(opcao) {
             case "cadastrar":
                 await cadastrarMeta()
-                console.log(metas)
+                console.log("Meta cadastrada!")
                 break
             case "listar":
                 await listarMetas()
-                console.log("Valos listar")
                 break
             case "sair":
                 console.log("Até depois!")
