@@ -42,3 +42,7 @@ Apresentar os dados.
     [x] Executar
     [x] Name function
     [x] Arrow function
+
+# Módulos em node.js
+    [x] Inportando modulos
+    [x] Biblioteca 'inquirer'
