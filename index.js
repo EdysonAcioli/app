@@ -1,10 +1,17 @@
+//importa modulos do inquirer
 const { select, input, checkbox } = require('@inquirer/prompts')
+
+//importa modulo fs do node
 const fs = require('fs').promises
 
+
+//Primeira mensagem a ser apresentada ao iniciar o programa
 let mensagem = "Bem vindo ao APP de metas!"
 
+//Cria variavel null das metas
 let metas
 
+//Função para carregar a metas do arquivo metas.json
 const carregarMetas = async () => {
     try {
         const dados = await fs.readFile("metas.json", "utf-8")
@@ -15,10 +22,12 @@ const carregarMetas = async () => {
     }
 }
 
+//Função para salvar as metas no arquivo metas.json
 const salvarMetas = async () => {
     await fs.writeFile("metas.json", JSON.stringify(metas, null, 2))
 }
 
+//Função para cadastrar uma nova meta
 const cadastrarMeta = async () => {
     const meta = await input({message: "Digite a meta:"})
     if(meta.length == 0){
@@ -32,6 +41,7 @@ const cadastrarMeta = async () => {
     mensagem = "Meta cadastrada!"
 }
 
+//Função para listar as metas
 const listarMetas = async () => {
     if(metas.length == 0){
         mensagem = "Você não tem metas cadastradas!"
@@ -64,6 +74,7 @@ const listarMetas = async () => {
     }
 }
 
+//Função para filtar e listar as metas realizadas
 const metasRealizadas = async () => {
     const realizadas = metas.filter((realizada) => {
         return realizada.checked
@@ -80,6 +91,7 @@ const metasRealizadas = async () => {
     })
 }
 
+//Função para filtrar e listar as metas pendentes
 const metasPendentes = async() => {
     const pendentes = metas.filter((pendente) => {
         return pendente.checked == false
@@ -96,6 +108,7 @@ const metasPendentes = async() => {
     })
 }
 
+//Função para selecionar e deletar meta(s)
 const deletarMetas = async() => {
     if(metas.length == 0){
         mensagem = "Sem metas cadastradas"
@@ -126,6 +139,7 @@ const deletarMetas = async() => {
     }
 }
 
+//Função para limpar o console e mostrar mensagem da referente a ultima ação
 const mostrarMensagem = () => {
     console.clear();
 
@@ -136,6 +150,7 @@ const mostrarMensagem = () => {
     }
 }
 
+//Função inicial que contem todas as opções
 const start = async () => {
 
     await carregarMetas()
@@ -198,4 +213,5 @@ const start = async () => {
     }
 }
 
+//Chama a função inicial
 start()
