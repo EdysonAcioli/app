@@ -35,6 +35,7 @@ const cadastrarMeta = async () => {
 const listarMetas = async () => {
     if(metas.length == 0){
         mensagem = "Você não tem metas cadastradas!"
+        return
     }else{
         const respostasMarcadas = await checkbox({
             message: "Use as setas para movimentar, o espaço para selecionar e o enter para avançar",
