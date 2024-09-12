@@ -1,0 +1,18 @@
+[
+  {
+    "value": "a",
+    "checked": true
+  },
+  {
+    "value": "b",
+    "checked": false
+  },
+  {
+    "value": "c",
+    "checked": true
+  },
+  {
+    "value": "d",
+    "checked": false
+  }
+]
