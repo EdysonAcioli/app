@@ -26,7 +26,6 @@ const listarMetas = async () => {
 
         metas.forEach((m) => {
             m.checked = false
-            console.log(m)
         })
 
         if(respostasMarcadas.length == 0){
@@ -78,6 +77,36 @@ const metasPendentes = async() => {
     })
 }
 
+const deletarMetas = async() => {
+    if(metas.length == 0){
+        console.log("Sem metas cadastradas")
+        return
+    }else{
+        const listaMetas = metas.map((meta) => {
+            return {value: meta.value, checked: false}
+        })
+    
+        const itensADeletar = await checkbox({
+            message: "Selecione para deletar",
+            choices: [...listaMetas],
+            instructions: false
+        })
+
+        if(itensADeletar == 0){
+            console.log ("Nenhum item a deletar")
+            return
+        }
+
+        itensADeletar.forEach((deletar) => {
+            metas = metas.filter((meta) => {
+                return meta.value != deletar
+            })
+        })
+
+        console.log("Meta(s) deletada(s)")
+    }
+}
+
 const start = async () => {
 
     while(true){
@@ -101,6 +130,10 @@ const start = async () => {
                     value: "pendentes"
                 },
                 {
+                    name: "Deletar metas",
+                    value: "deletar"
+                },
+                {
                     name: "Sair",
                     value: "sair"
                 }
@@ -121,6 +154,9 @@ const start = async () => {
                 break
             case "pendentes":
                 await metasPendentes()
+                break
+            case "deletar":
+                await deletarMetas()
                 break
             case "sair":
                 console.log("Até depois!")
